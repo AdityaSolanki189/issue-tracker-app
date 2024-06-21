@@ -3,6 +3,9 @@
 import { Issue } from '@prisma/client';
 import { ColumnDef } from '@tanstack/react-table';
 import moment from 'moment';
+import { StatusBadge } from './status-badge';
+import { ArrowUpDown } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export const columns: ColumnDef<Issue>[] = [
     {
@@ -12,29 +15,29 @@ export const columns: ColumnDef<Issue>[] = [
     {
         header: 'Status',
         cell: ({ row }) => {
-            return (
-                <div>
-                    {row.original.status === 'OPEN' ? (
-                        <span>Open</span>
-                    ) : row.original.status === 'DONE' ? (
-                        <span>Done</span>
-                    ) : (
-                        <span>In Progress</span>
-                    )}
-                </div>
-            );
+            return StatusBadge({
+                status: row.original.status,
+            });
         },
     },
     {
-        header: 'Created',
-        cell: ({ row }) => {
+        accessorKey: 'createdAt',
+        header: ({ column }) => {
             return (
-                <div>
-                    {moment(row.original.createdAt).format(
-                        'dddd, MMMM Do YYYY'
-                    )}
-                </div>
+                <Button
+                    className="p-0"
+                    variant="ghost"
+                    onClick={() =>
+                        column.toggleSorting(column.getIsSorted() === 'asc')
+                    }
+                >
+                    Created
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
             );
         },
+        cell: ({ row }) => {
+            return moment(row.original.createdAt).fromNow();
+        }
     },
 ];
