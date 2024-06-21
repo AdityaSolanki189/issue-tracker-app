@@ -18,33 +18,20 @@ import { toast } from '@/components/ui/use-toast';
 import SimpleMDE from 'react-simplemde-editor';
 import 'easymde/dist/easymde.min.css';
 import axios from 'axios';
-
-const FormSchema = z.object({
-    title: z
-        .string()
-        .min(4, {
-            message: 'Title must be at least 4 characters.',
-        })
-        .max(100, {
-            message: 'Bio must not be longer than 100 characters.',
-        }),
-    description: z
-        .string()
-        .min(4, {
-            message: 'Description must be at least 4 characters.',
-        })
-        .max(1000, {
-            message: 'Description must not be longer than 1000 characters.',
-        }),
-});
+import { createIssueSchema } from '@/app/FormValidationSchema';
+import ErrorMessage from '@/app/_components/ErrorMessage';
 
 export default function NewIssuePage() {
     const router = useRouter();
-    const form = useForm<z.infer<typeof FormSchema>>({
-        resolver: zodResolver(FormSchema),
+    const form = useForm<z.infer<typeof createIssueSchema>>({
+        resolver: zodResolver(createIssueSchema),
+        defaultValues: {
+            title: '',
+            description: '',
+        },
     });
 
-    const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+    const onSubmit = async (data: z.infer<typeof createIssueSchema>) => {
         try {
             const response = await axios.post('/api/issues', data, {
                 headers: {
@@ -75,8 +62,6 @@ export default function NewIssuePage() {
             });
 
             router.push('/issues');
-
-            form.reset();
         } catch (error: any) {
             console.log('Error creating issue: ', error.message);
 
@@ -108,6 +93,9 @@ export default function NewIssuePage() {
                                         {...field}
                                     />
                                 </FormControl>
+                                {form.formState.errors.title && (
+                                    ErrorMessage({ children: form.formState.errors.title?.message })
+                                )}
                             </FormItem>
                         )}
                     />
@@ -123,6 +111,9 @@ export default function NewIssuePage() {
                                         {...field}
                                     />
                                 </FormControl>
+                                {form.formState.errors.title && (
+                                    ErrorMessage({ children: form.formState.errors.description?.message })
+                                )}
                                 <FormDescription>
                                     You can <span>@mention</span> other users
                                     and organizations.
