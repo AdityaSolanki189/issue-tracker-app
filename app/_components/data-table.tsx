@@ -5,9 +5,9 @@ import {
     SortingState,
     flexRender,
     getCoreRowModel,
-    useReactTable,
     getPaginationRowModel,
     getSortedRowModel,
+    useReactTable,
 } from '@tanstack/react-table';
 
 import {
@@ -27,7 +27,7 @@ interface DataTableProps<TData, TValue> {
     data: TData[];
 }
 
-export function DataTable<TData, TValue>({
+export default function DataTable<TData, TValue>({
     columns,
     data,
 }: DataTableProps<TData, TValue>) {

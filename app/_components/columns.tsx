@@ -1,12 +1,12 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import { Issue } from '@prisma/client';
 import { ColumnDef } from '@tanstack/react-table';
-import moment from 'moment';
-import { StatusBadge } from './status-badge';
 import { ArrowUpDown } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import moment from 'moment';
 import Link from 'next/link';
+import StatusBadge from './status-badge';
 
 export const columns: ColumnDef<Issue>[] = [
     {
@@ -49,3 +49,5 @@ export const columns: ColumnDef<Issue>[] = [
         },
     },
 ];
+
+export default columns;

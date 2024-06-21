@@ -1,4 +1,4 @@
-import { StatusBadge } from '@/app/_components/status-badge';
+import { StatusBadge } from '@/app/_components';
 import { Card } from '@/components/ui/card';
 import prisma from '@/prisma/client';
 import { notFound } from 'next/navigation';

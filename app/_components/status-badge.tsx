@@ -7,7 +7,7 @@ const statusMap: Record<Status, { label: string; color: string }> = {
     IN_PROGRESS: { label: 'In Progress', color: 'text-purple-500 bg-purple-100' },
 };
 
-export function StatusBadge({ status }: { status: Status }) {
+export default function StatusBadge({ status }: { status: Status }) {
     return (
         <Badge variant={'outline'} className={`${statusMap[status].color}`}>
             {statusMap[status].label}

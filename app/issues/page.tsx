@@ -1,12 +1,8 @@
 'use client';
 
+import { columns, DataTable, ErrorMessage } from '@/app/_components';
 import { Button } from '@/components/ui/button';
-import { Issue } from '@prisma/client';
-import axios from 'axios';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { DataTable } from '../_components/data-table';
-import { columns } from '../_components/columns';
+import { Label } from '@/components/ui/label';
 import {
     Select,
     SelectContent,
@@ -14,8 +10,10 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
-import ErrorMessage from '../_components/error-message';
+import { Issue } from '@prisma/client';
+import axios from 'axios';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 export default function Issues() {
     const [issues, setIssues] = useState<Issue[]>([]);
