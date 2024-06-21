@@ -19,9 +19,9 @@ import SimpleMDE from 'react-simplemde-editor';
 import 'easymde/dist/easymde.min.css';
 import axios from 'axios';
 import { createIssueSchema } from '@/app/FormValidationSchema';
-import ErrorMessage from '@/app/_components/ErrorMessage';
+import ErrorMessage from '@/app/_components/error-message';
 import { useState } from 'react';
-import Spinner from '@/app/_components/Spinner';
+import Spinner from '@/app/_components/spinner';
 
 export default function NewIssuePage() {
     const router = useRouter();
