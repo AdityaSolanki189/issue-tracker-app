@@ -9,14 +9,13 @@ import {
     FormDescription,
     FormField,
     FormItem,
-    FormLabel,
-    FormMessage,
 } from '@/components/ui/form';
-import { Textarea } from '@/components/ui/textarea';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from '@/components/ui/use-toast';
+import SimpleMDE from 'react-simplemde-editor';
+import 'easymde/dist/easymde.min.css';
 
 const FormSchema = z.object({
     title: z
@@ -32,8 +31,8 @@ const FormSchema = z.object({
         .min(4, {
             message: 'Description must be at least 4 characters.',
         })
-        .max(500, {
-            message: 'Description must not be longer than 500 characters.',
+        .max(1000, {
+            message: 'Description must not be longer than 1000 characters.',
         }),
 });
 
@@ -68,7 +67,7 @@ export default function NewIssuePage() {
                         name="title"
                         render={({ field }) => (
                             <FormItem className="">
-                                <Label>Title</Label>
+                                <Label className="text-xl">Title</Label>
                                 <FormControl>
                                     <Input
                                         placeholder="Give a title to your issue"
@@ -83,9 +82,9 @@ export default function NewIssuePage() {
                         name="description"
                         render={({ field }) => (
                             <FormItem className="">
-                                <Label>Description</Label>
+                                <Label className="text-xl">Description</Label>
                                 <FormControl>
-                                    <Textarea
+                                    <SimpleMDE
                                         placeholder="Give a description to your issue"
                                         {...field}
                                     />
