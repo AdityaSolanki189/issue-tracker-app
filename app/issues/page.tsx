@@ -64,6 +64,7 @@ export default function Issues() {
                 </div>
             </div>
             <div className="w-2/3 h-14">
+                {/* TODO: add skeletons to the data table */}
                 <DataTable columns={columns} data={issues} />
             </div>
         </div>

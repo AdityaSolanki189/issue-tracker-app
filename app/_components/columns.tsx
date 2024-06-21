@@ -6,11 +6,19 @@ import moment from 'moment';
 import { StatusBadge } from './status-badge';
 import { ArrowUpDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export const columns: ColumnDef<Issue>[] = [
     {
-        accessorKey: 'title',
         header: 'Issue',
+        accessorKey: 'title',
+        cell: ({ row }) => {
+            return (
+                <Link href={`/issues/${row.original.id}`}>
+                    {row.original.title}
+                </Link>
+            );
+        },
     },
     {
         header: 'Status',
@@ -25,7 +33,7 @@ export const columns: ColumnDef<Issue>[] = [
         header: ({ column }) => {
             return (
                 <Button
-                    className="p-0"
+                    className="p-0 hover:bg-grey-200"
                     variant="ghost"
                     onClick={() =>
                         column.toggleSorting(column.getIsSorted() === 'asc')
@@ -38,6 +46,6 @@ export const columns: ColumnDef<Issue>[] = [
         },
         cell: ({ row }) => {
             return moment(row.original.createdAt).fromNow();
-        }
+        },
     },
 ];
