@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -16,6 +17,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from '@/components/ui/use-toast';
 import SimpleMDE from 'react-simplemde-editor';
 import 'easymde/dist/easymde.min.css';
+import axios from 'axios';
 
 const FormSchema = z.object({
     title: z
@@ -37,22 +39,54 @@ const FormSchema = z.object({
 });
 
 export default function NewIssuePage() {
+    const router = useRouter();
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
     });
 
-    function onSubmit(data: z.infer<typeof FormSchema>) {
-        toast({
-            title: 'You submitted the following values:',
-            description: (
-                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                    <code className="text-white">
-                        {JSON.stringify(data, null, 2)}
-                    </code>
-                </pre>
-            ),
-        });
-    }
+    const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+        try {
+            const response = await axios.post('/api/issues', data, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.status !== 201) {
+                toast({
+                    variant: 'destructive',
+                    title: 'Failed to create issue',
+                    description: 'Please try again later.',
+                });
+
+                throw new Error('Failed to create issue');
+            }
+
+            toast({
+                variant: 'success',
+                title: 'Issue Created Successfully!',
+                description: (
+                    <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+                        <code className="text-white">
+                            {JSON.stringify(data, null, 2)}
+                        </code>
+                    </pre>
+                ),
+            });
+
+            router.push('/issues');
+
+            form.reset();
+        } catch (error: any) {
+            console.log('Error creating issue: ', error.message);
+
+            toast({
+                variant: 'destructive',
+                title: 'Failed to create issue',
+                description: 'Please try again later.',
+            });
+        }
+    };
 
     return (
         <div className="p-8">
