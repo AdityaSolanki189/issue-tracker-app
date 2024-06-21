@@ -11,7 +11,7 @@ import {
     FormField,
     FormItem,
 } from '@/components/ui/form';
-import { z } from 'zod';
+import { set, z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from '@/components/ui/use-toast';
@@ -20,6 +20,8 @@ import 'easymde/dist/easymde.min.css';
 import axios from 'axios';
 import { createIssueSchema } from '@/app/FormValidationSchema';
 import ErrorMessage from '@/app/_components/ErrorMessage';
+import { useState } from 'react';
+import Spinner from '@/app/_components/Spinner';
 
 export default function NewIssuePage() {
     const router = useRouter();
@@ -30,9 +32,11 @@ export default function NewIssuePage() {
             description: '',
         },
     });
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const onSubmit = async (data: z.infer<typeof createIssueSchema>) => {
         try {
+            setIsSubmitting(true);
             const response = await axios.post('/api/issues', data, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -63,6 +67,7 @@ export default function NewIssuePage() {
 
             router.push('/issues');
         } catch (error: any) {
+            setIsSubmitting(false);
             console.log('Error creating issue: ', error.message);
 
             toast({
@@ -93,9 +98,12 @@ export default function NewIssuePage() {
                                         {...field}
                                     />
                                 </FormControl>
-                                {form.formState.errors.title && (
-                                    ErrorMessage({ children: form.formState.errors.title?.message })
-                                )}
+                                {form.formState.errors.title &&
+                                    ErrorMessage({
+                                        children:
+                                            form.formState.errors.title
+                                                ?.message,
+                                    })}
                             </FormItem>
                         )}
                     />
@@ -111,9 +119,12 @@ export default function NewIssuePage() {
                                         {...field}
                                     />
                                 </FormControl>
-                                {form.formState.errors.title && (
-                                    ErrorMessage({ children: form.formState.errors.description?.message })
-                                )}
+                                {form.formState.errors.title &&
+                                    ErrorMessage({
+                                        children:
+                                            form.formState.errors.description
+                                                ?.message,
+                                    })}
                                 <FormDescription>
                                     You can <span>@mention</span> other users
                                     and organizations.
@@ -121,7 +132,9 @@ export default function NewIssuePage() {
                             </FormItem>
                         )}
                     />
-                    <Button type="submit">Submit New Issue</Button>
+                    <Button type="submit" disabled={isSubmitting}>
+                        Submit New Issue {isSubmitting && <Spinner />}
+                    </Button>
                 </form>
             </Form>
         </div>

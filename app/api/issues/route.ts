@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/prisma/client";
-import { createIssueSchema } from "@/app/FormValidationSchema";
+import { NextRequest, NextResponse } from 'next/server';
+import prisma from '@/prisma/client';
+import { createIssueSchema } from '@/app/FormValidationSchema';
 
 export async function POST(request: NextRequest) {
     const body = await request.json();
@@ -8,15 +8,15 @@ export async function POST(request: NextRequest) {
 
     const validated = createIssueSchema.safeParse(body);
 
-    if(!validated.success) {
+    if (!validated.success) {
         return NextResponse.json({ error: validated.error }, { status: 400 });
     }
 
     const newIssue = await prisma.issue.create({
         data: {
             title: body.title,
-            description: body.description
-        }
+            description: body.description,
+        },
     });
 
     return NextResponse.json(newIssue, { status: 201 });
