@@ -42,22 +42,23 @@ export default function Issues() {
 
     return (
         <div className="grid gap-4 p-8">
-            <div className='w-2/3 flex justify-between'>
+            <div className="w-2/3 flex justify-between">
                 <Button>
                     <Link href="/issues/new">New Issue</Link>
                 </Button>
 
                 <div className="flex gap-2 items-center">
                     <Label htmlFor="type-select">Status Filter</Label>
-                    <Select
-                    >
+                    <Select>
                         <SelectTrigger id="type-select" className="w-[180px]">
                             <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="ALL">All</SelectItem>
                             <SelectItem value="OPEN">Open</SelectItem>
-                            <SelectItem value="IN_PROGRESS">In Progress</SelectItem>
+                            <SelectItem value="IN_PROGRESS">
+                                In Progress
+                            </SelectItem>
                             <SelectItem value="CLOSED">Closed</SelectItem>
                         </SelectContent>
                     </Select>
