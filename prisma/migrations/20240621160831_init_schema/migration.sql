@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "Status" AS ENUM ('OPEN', 'IN_PROGRESS', 'DONE');
+CREATE TYPE "Status" AS ENUM ('OPEN', 'IN_PROGRESS', 'CLOSED');
 
 -- CreateTable
 CREATE TABLE "Issue" (

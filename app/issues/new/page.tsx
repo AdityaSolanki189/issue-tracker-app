@@ -11,7 +11,7 @@ import {
     FormField,
     FormItem,
 } from '@/components/ui/form';
-import { set, z } from 'zod';
+import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from '@/components/ui/use-toast';
@@ -79,8 +79,8 @@ export default function NewIssuePage() {
     };
 
     return (
-        <div className="p-8">
-            <div className="font-bold text-4xl pb-8">Create new issue</div>
+        <div className="grid gap-4 p-8">
+            <div className="font-bold text-4xl pb-4">Create new issue</div>
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}

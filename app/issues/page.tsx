@@ -15,6 +15,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
+import ErrorMessage from '../_components/error-message';
 
 export default function Issues() {
     const [issues, setIssues] = useState<Issue[]>([]);
@@ -26,7 +27,9 @@ export default function Issues() {
         });
 
         if (issues.status !== 200) {
-            throw new Error('Failed to fetch issues');
+            ErrorMessage({
+                children: 'Failed to fetch issues',
+            });
         }
 
         console.log(issues.data);
@@ -55,7 +58,7 @@ export default function Issues() {
                             <SelectItem value="ALL">All</SelectItem>
                             <SelectItem value="OPEN">Open</SelectItem>
                             <SelectItem value="IN_PROGRESS">In Progress</SelectItem>
-                            <SelectItem value="DONE">Done</SelectItem>
+                            <SelectItem value="CLOSED">Closed</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
