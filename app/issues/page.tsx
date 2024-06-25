@@ -1,5 +1,3 @@
-'use client';
-
 import { columns, DataTable, ErrorMessage } from '@/app/_components';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -10,33 +8,17 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { Issue } from '@prisma/client';
-import axios from 'axios';
+import prisma from '@/prisma/client';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 
-export default function Issues() {
-    const [issues, setIssues] = useState<Issue[]>([]);
-    const fetchAllIssues = async () => {
-        const issues = await axios.get('/api/issues', {
-            headers: {
-                'Content-Type': 'application/json',
-            },
+export default async function Issues() {
+    const issues = await prisma.issue.findMany();
+
+    if (!issues) {
+        ErrorMessage({
+            children: 'Failed to fetch issues',
         });
-
-        if (issues.status !== 200) {
-            ErrorMessage({
-                children: 'Failed to fetch issues',
-            });
-        }
-
-        console.log(issues.data);
-        setIssues(issues.data);
-    };
-
-    useEffect(() => {
-        fetchAllIssues();
-    }, []);
+    }
 
     return (
         <div className="grid gap-4 p-8">
