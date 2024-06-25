@@ -80,6 +80,7 @@ export default function IssueForm({
                 });
 
                 router.push('/issues');
+                router.refresh();
             } else {
                 const response = await axios.post('/api/issues', data, {
                     headers: {
