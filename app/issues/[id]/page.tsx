@@ -3,8 +3,8 @@ import { Card } from '@/components/ui/card';
 import prisma from '@/prisma/client';
 import { notFound } from 'next/navigation';
 import ReactMarkdown from 'react-markdown';
-import DeleteIssueButton from './edit/_components/DeleteIssueButton';
-import EditIssueButton from './edit/_components/EditIssueButton';
+import DeleteIssueButton from '../_components/DeleteIssueButton';
+import EditIssueButton from '../_components/EditIssueButton';
 
 interface Props {
     params: {

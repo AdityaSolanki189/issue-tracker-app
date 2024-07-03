@@ -79,7 +79,7 @@ export default function IssueForm({
                     ),
                 });
 
-                router.push('/issues');
+                router.push('/issues/list');
                 router.refresh();
             } else {
                 const response = await axios.post('/api/issues', data, {
@@ -110,7 +110,8 @@ export default function IssueForm({
                     ),
                 });
 
-                router.push('/issues');
+                router.push('/issues/list');
+                router.refresh();
             }
         } catch (error: any) {
             setIsSubmitting(false);

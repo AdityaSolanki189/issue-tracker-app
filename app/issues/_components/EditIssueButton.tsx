@@ -6,7 +6,7 @@ export default function EditIssueButton({ issueId }: { issueId: number}) {
     return (
         <Button className="gap-2 max-w-40">
             <SquarePen />
-            <Link href={`/issues/${issueId}/edit`}>Edit Issue</Link>
+            <Link href={`/issues/edit/${issueId}`}>Edit Issue</Link>
         </Button>
     );
 }

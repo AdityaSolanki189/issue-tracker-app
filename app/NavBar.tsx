@@ -12,7 +12,7 @@ export default function NavBar() {
             label: 'Dashboard',
         },
         {
-            href: '/issues',
+            href: '/issues/list',
             label: 'Issues',
         },
     ];

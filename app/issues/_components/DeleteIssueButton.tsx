@@ -25,10 +25,9 @@ const DeleteIssueButton = ({ issueId }: { issueId: number }) => {
 
     const deleteIssue = async () => {
         try {
-            throw new Error('This is a test error');
             setIsDeleting(true);
             await axios.delete('/api/issues/' + issueId);
-            router.push('/issues');
+            router.push('/issues/list');
             router.refresh();
         } catch (error) {
             setIsDeleting(false);
@@ -78,8 +77,8 @@ const DeleteIssueButton = ({ issueId }: { issueId: number }) => {
                                     An error occurred
                                 </AlertDialogTitle>
                                 <AlertDialogDescription>
-                                    There was an error deleting your issue. Please
-                                    try again later.
+                                    There was an error deleting your issue.
+                                    Please try again later.
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
