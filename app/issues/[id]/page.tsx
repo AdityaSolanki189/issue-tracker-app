@@ -5,6 +5,8 @@ import { notFound } from 'next/navigation';
 import ReactMarkdown from 'react-markdown';
 import DeleteIssueButton from '../_components/DeleteIssueButton';
 import EditIssueButton from '../_components/EditIssueButton';
+import { getServerSession } from 'next-auth';
+import authOptions from '@/app/auth/AuthOptions';
 
 interface Props {
     params: {
@@ -13,6 +15,8 @@ interface Props {
 }
 
 export default async function IssueDetailsPage({ params }: Props) {
+    const session = await getServerSession(authOptions);
+
     const issue = await prisma.issue.findUnique({
         where: {
             id: parseInt(params.id),
@@ -42,12 +46,14 @@ export default async function IssueDetailsPage({ params }: Props) {
                     <ReactMarkdown>{issue.description}</ReactMarkdown>
                 </Card>
             </div>
-            <div>
-                <div className="flex justify-center flex-col gap-2">
-                    <EditIssueButton issueId={issue.id} />
-                    <DeleteIssueButton issueId={issue.id} />
+            {session && (
+                <div>
+                    <div className="flex justify-center flex-col gap-2">
+                        <EditIssueButton issueId={issue.id} />
+                        <DeleteIssueButton issueId={issue.id} />
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 }
