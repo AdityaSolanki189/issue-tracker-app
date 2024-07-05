@@ -9,6 +9,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
+import { toast } from '@/components/ui/use-toast';
 import { Issue, User } from '@prisma/client';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -35,13 +36,20 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
 
     return (
         <div className="flex gap-2 flex-col max-w-fit">
+            <label htmlFor="type-select">Assigned to</label>
             <Select
+                defaultValue={issue.assignedToUserId || '0'}
                 onValueChange={(userId) => {
                     axios.patch(`/api/issues/${issue.id}`, {
-                        assignedToUserId: userId === "0" ? null : userId,
+                        assignedToUserId: userId === '0' ? null : userId,
+                    }).catch(() => {
+                        toast({
+                            title: 'Failed to assign user',
+                            description: 'Changes could not be saved, Please try again later.',
+                            variant: 'destructive',
+                        });
                     });
                 }}
-                defaultValue={issue.assignedToUserId || "0"}
             >
                 <SelectTrigger id="type-select" className="w-[180px]">
                     <SelectValue placeholder="Assign to..." />
