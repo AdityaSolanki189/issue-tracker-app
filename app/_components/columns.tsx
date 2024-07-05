@@ -10,8 +10,21 @@ import StatusBadge from './status-badge';
 
 export const columns: ColumnDef<Issue>[] = [
     {
-        header: 'Issue',
         accessorKey: 'title',
+        header: ({ column }) => {
+            return (
+                <Button
+                    className="p-0 hover:bg-grey-200"
+                    variant="ghost"
+                    onClick={() =>
+                        column.toggleSorting(column.getIsSorted() === 'asc')
+                    }
+                >
+                    Issue
+                    <ArrowUpDown className="hidden ml-2 h-4 w-4 hover:visible" />
+                </Button>
+            );
+        },
         cell: ({ row }) => {
             return (
                 <Link href={`/issues/${row.original.id}`}>
@@ -21,7 +34,21 @@ export const columns: ColumnDef<Issue>[] = [
         },
     },
     {
-        header: 'Status',
+        accessorKey: 'status',
+        header: ({ column }) => {
+            return (
+                <Button
+                    className="p-0 hover:bg-grey-200"
+                    variant="ghost"
+                    onClick={() =>
+                        column.toggleSorting(column.getIsSorted() === 'asc')
+                    }
+                >
+                    Status
+                    <ArrowUpDown className="hidden ml-2 h-4 w-4 hover:visible" />
+                </Button>
+            );
+        },
         cell: ({ row }) => {
             return StatusBadge({
                 status: row.original.status,
