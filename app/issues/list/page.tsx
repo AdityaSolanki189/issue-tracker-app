@@ -26,7 +26,7 @@ export default async function Issues({
 
     return (
         <div className="grid gap-4 p-8">
-            <div className="w-2/3 flex justify-between">
+            <div className="w-full md:w-2/3 flex justify-between">
                 <div className="flex gap-2 items-center">
                     <IssueStatusFilter />
                 </div>
@@ -34,7 +34,7 @@ export default async function Issues({
                     <Link href="/issues/new">New Issue</Link>
                 </Button>
             </div>
-            <div className="w-2/3 h-14">
+            <div className="w-full md:w-2/3 h-14">
                 {/* TODO: add skeletons to the data table */}
                 <DataTable columns={columns} data={issues} />
             </div>
