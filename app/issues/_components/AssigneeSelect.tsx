@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Select,
     SelectContent,
@@ -9,8 +9,21 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { User } from '@prisma/client';
+import axios from 'axios';
 
 const AssigneeSelect = () => {
+    const [users, setUsers] = useState<User[]>([]);
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            const response = await axios.get<User[]>('/api/users');
+            setUsers(response.data);
+        };
+
+        fetchUsers();
+    }, []);
+
     return (
         <div className="flex gap-2 flex-col max-w-fit">
             <Select>
@@ -20,10 +33,11 @@ const AssigneeSelect = () => {
                 <SelectContent>
                     <SelectGroup>
                         <SelectLabel>Suggestions</SelectLabel>
-                        <SelectItem value="1">Aditya Solanki</SelectItem>
-                        <SelectItem value="2">Rohit</SelectItem>
-                        <SelectItem value="3">Preksha</SelectItem>
-                        <SelectItem value="4">Santosh</SelectItem>
+                        {users.map((user) => (
+                            <SelectItem key={user.id} value={user.id}>
+                                {user.name}
+                            </SelectItem>
+                        ))}
                     </SelectGroup>
                 </SelectContent>
             </Select>
