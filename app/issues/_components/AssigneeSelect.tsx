@@ -9,11 +9,11 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
-import { User } from '@prisma/client';
+import { Issue, User } from '@prisma/client';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
-const AssigneeSelect = () => {
+const AssigneeSelect = ({ issue }: { issue: Issue }) => {
     const {
         data: users,
         error,
@@ -25,23 +25,31 @@ const AssigneeSelect = () => {
         retry: 2,
     });
 
-    if(isLoading) {
+    if (isLoading) {
         return <Skeleton />;
     }
 
-    if(error) {
+    if (error) {
         return null;
     }
 
     return (
         <div className="flex gap-2 flex-col max-w-fit">
-            <Select>
+            <Select
+                onValueChange={(userId) => {
+                    axios.patch(`/api/issues/${issue.id}`, {
+                        assignedToUserId: userId === "0" ? null : userId,
+                    });
+                }}
+                defaultValue={issue.assignedToUserId || "0"}
+            >
                 <SelectTrigger id="type-select" className="w-[180px]">
                     <SelectValue placeholder="Assign to..." />
                 </SelectTrigger>
                 <SelectContent>
                     <SelectGroup>
                         <SelectLabel>Suggestions</SelectLabel>
+                        <SelectItem value="0">Unassigned</SelectItem>
                         {users?.map((user) => (
                             <SelectItem key={user.id} value={user.id}>
                                 {user.name}

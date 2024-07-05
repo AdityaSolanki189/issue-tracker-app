@@ -50,7 +50,7 @@ export default async function IssueDetailsPage({ params }: Props) {
             {session && (
                 <div>
                     <div className="flex justify-center flex-col gap-2">
-                        <AssigneeSelect />
+                        <AssigneeSelect issue={issue}/>
                         <EditIssueButton issueId={issue.id} />
                         <DeleteIssueButton issueId={issue.id} />
                     </div>
