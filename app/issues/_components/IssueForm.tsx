@@ -16,7 +16,7 @@ import { Label } from '@/components/ui/label';
 import { toast } from '@/components/ui/use-toast';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Issue } from '@prisma/client';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import 'easymde/dist/easymde.min.css';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -40,86 +40,59 @@ export default function IssueForm({
         },
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
-    console.log(issue);
+
+    const handleResponse = (
+        response: AxiosResponse,
+        successMessage: string,
+        data: any
+    ) => {
+        if (response.status !== 200 && response.status !== 201) {
+            toast({
+                variant: 'destructive',
+                title: 'Failed to save issue',
+                description: 'Please try again later.',
+            });
+            throw new Error('Failed to save issue');
+        }
+
+        toast({
+            variant: 'success',
+            title: successMessage,
+            description: (
+                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+                    <code className="text-white">
+                        {JSON.stringify(data, null, 2)}
+                    </code>
+                </pre>
+            ),
+        });
+    };
 
     const onSubmit = async (data: z.infer<typeof issueSchema>) => {
         try {
             setIsSubmitting(true);
 
+            const headers = { 'Content-Type': 'application/json' };
+            let response;
+
             if (issue) {
-                const response = await axios.patch(
-                    `/api/issues/${issue.id}`,
-                    data,
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    }
-                );
-
-                if (response.status !== 200) {
-                    toast({
-                        variant: 'destructive',
-                        title: 'Failed to update issue',
-                        description: 'Please try again later.',
-                    });
-
-                    throw new Error('Failed to update issue');
-                }
-
-                toast({
-                    variant: 'success',
-                    title: 'Issue Updated Successfully!',
-                    description: (
-                        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                            <code className="text-white">
-                                {JSON.stringify(data, null, 2)}
-                            </code>
-                        </pre>
-                    ),
+                response = await axios.patch(`/api/issues/${issue.id}`, data, {
+                    headers,
                 });
-
-                router.push('/issues/list');
-                router.refresh();
+                handleResponse(response, 'Issue Updated Successfully!', data);
             } else {
-                const response = await axios.post('/api/issues', data, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                if (response.status !== 201) {
-                    toast({
-                        variant: 'destructive',
-                        title: 'Failed to create issue',
-                        description: 'Please try again later.',
-                    });
-
-                    throw new Error('Failed to create issue');
-                }
-
-                toast({
-                    variant: 'success',
-                    title: 'Issue Created Successfully!',
-                    description: (
-                        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                            <code className="text-white">
-                                {JSON.stringify(data, null, 2)}
-                            </code>
-                        </pre>
-                    ),
-                });
-
-                router.push('/issues/list');
-                router.refresh();
+                response = await axios.post('/api/issues', data, { headers });
+                handleResponse(response, 'Issue Created Successfully!', data);
             }
-        } catch (error: any) {
-            setIsSubmitting(false);
-            console.log('Error creating issue: ', error.message);
 
+            router.push('/issues/list');
+            router.refresh();
+        } catch (error: any) {
+            console.error('Error saving issue:', error.message);
+            setIsSubmitting(false);
             toast({
                 variant: 'destructive',
-                title: 'Failed to create issue',
+                title: 'Failed to save issue',
                 description: 'Please try again later.',
             });
         }
