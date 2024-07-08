@@ -5,3 +5,4 @@ export { default as DataTable } from './data-table';
 export { default as columns } from './columns';
 export { default as LatestIssue } from './latestIssue';
 export { default as IssuesSummary } from './issuesSummary';
+export { default as IssueChart } from './issueChart';
