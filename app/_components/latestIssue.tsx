@@ -1,15 +1,9 @@
-import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableRow,
-} from '@/components/ui/table';
-import { Issue } from '@prisma/client';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Card } from '@/components/ui/card';
+import { Table, TableBody, TableRow } from '@/components/ui/table';
+import prisma from '@/prisma/client';
 import Link from 'next/link';
 import StatusBadge from './status-badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import prisma from '@/prisma/client';
-import { Card } from '@/components/ui/card';
 
 export default async function LatestIssue() {
     const issues = await prisma.issue.findMany({
