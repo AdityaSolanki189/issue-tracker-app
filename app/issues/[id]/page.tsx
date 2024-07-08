@@ -1,14 +1,15 @@
 import { StatusBadge } from '@/app/_components';
+import authOptions from '@/app/auth/AuthOptions';
 import { Card } from '@/components/ui/card';
 import prisma from '@/prisma/client';
+import { Metadata } from 'next';
+import { getServerSession } from 'next-auth';
 import { notFound } from 'next/navigation';
+import { cache } from 'react';
 import ReactMarkdown from 'react-markdown';
+import AssigneeSelect from '../_components/AssigneeSelect';
 import DeleteIssueButton from '../_components/DeleteIssueButton';
 import EditIssueButton from '../_components/EditIssueButton';
-import { getServerSession } from 'next-auth';
-import authOptions from '@/app/auth/AuthOptions';
-import AssigneeSelect from '../_components/AssigneeSelect';
-import { Metadata } from 'next';
 
 interface Props {
     params: {
@@ -16,14 +17,14 @@ interface Props {
     };
 }
 
+const fetchIssue = cache((issueId: number) =>
+    prisma.issue.findUnique({ where: { id: issueId } })
+);
+
 export default async function IssueDetailsPage({ params }: Props) {
     const session = await getServerSession(authOptions);
 
-    const issue = await prisma.issue.findUnique({
-        where: {
-            id: parseInt(params.id),
-        },
-    });
+    const issue = await fetchIssue(parseInt(params.id));
 
     if (!issue) {
         notFound();
@@ -62,11 +63,7 @@ export default async function IssueDetailsPage({ params }: Props) {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const issue = await prisma.issue.findUnique({
-        where: {
-            id: parseInt(params.id),
-        },
-    });
+    const issue = await fetchIssue(parseInt(params.id));
 
     return {
         title: issue?.title,
