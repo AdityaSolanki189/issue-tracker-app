@@ -1,10 +1,11 @@
-import Image from 'next/image';
+import prisma from '@/prisma/client';
+import { LatestIssue } from './_components';
 
 export default function Home() {
+    
     return (
-        <div>
-            <h1>My Homepage</h1>
-            <p>Welcome to my homepage!</p>
+        <div className='flex p-4'>
+            <LatestIssue  />
         </div>
     );
 }
