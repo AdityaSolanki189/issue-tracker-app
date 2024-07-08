@@ -2,7 +2,7 @@
 
 import { issueSchema } from '@/app/FormValidationSchema';
 import { ErrorMessage } from '@/app/_components';
-import Spinner from '@/app/_components/spinner';
+import Spinner from '../../_components/spinner';
 import { Button } from '@/components/ui/button';
 import {
     Form,

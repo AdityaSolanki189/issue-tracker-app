@@ -1,6 +1,6 @@
 'use client';
 
-import { Spinner } from '@/app/_components';
+import Spinner from '../../_components/spinner';
 import {
     AlertDialog,
     AlertDialogAction,
