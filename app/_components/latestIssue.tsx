@@ -16,7 +16,7 @@ export default async function LatestIssue() {
         },
     });
     return (
-        <Card className="flex p-4 w-full">
+        <Card className="flex p-4">
             <Table className="flex flex-col gap-2 w-full">
                 <div className="font-semibold text-lg">Latest Issues</div>
                 <TableBody className="flex flex-col gap-3">

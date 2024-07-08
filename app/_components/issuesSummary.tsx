@@ -34,7 +34,6 @@ export default function IssuesSummary({ open, inProgress, closed }: Props) {
 
     return (
         <div>
-            <h1>Issues Summary Report</h1>
             <div className='flex gap-4 mt-4'>
                 {containers.map((container) => (
                     <Card className='flex flex-col gap-2 p-4 items-center' key={container.status}>
