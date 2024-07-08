@@ -1,5 +1,7 @@
 import prisma from '@/prisma/client';
 import { IssueChart, IssuesSummary, LatestIssue } from './_components';
+import { Description } from '@radix-ui/react-toast';
+import { Metadata } from 'next';
 
 export default async function Home() {
     const open = await prisma.issue.count({
@@ -19,21 +21,8 @@ export default async function Home() {
     });
 
     return (
-        // <div className="flex p-4">
-        //     {/* <LatestIssue /> */}
-        //     {/* <IssuesSummary
-        //         open={open}
-        //         inProgress={inProgress}
-        //         closed={closed}
-        //     ></IssuesSummary> */}
-        //     <IssueChart
-        //         open={open}
-        //         inProgress={inProgress}
-        //         closed={closed}
-        //     ></IssueChart>
-        // </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 p-6">
-            <div className='flex flex-col gap-5 items-center'>
+            <div className="flex flex-col gap-5 items-center">
                 <IssuesSummary
                     open={open}
                     inProgress={inProgress}
@@ -48,4 +37,9 @@ export default async function Home() {
             <LatestIssue />
         </div>
     );
+}
+
+export const metadata: Metadata = {
+    title: 'Issue Tracker - Dashboard',
+    description: 'View Summary of Project Issues',
 }
