@@ -8,6 +8,7 @@ import EditIssueButton from '../_components/EditIssueButton';
 import { getServerSession } from 'next-auth';
 import authOptions from '@/app/auth/AuthOptions';
 import AssigneeSelect from '../_components/AssigneeSelect';
+import { Metadata } from 'next';
 
 interface Props {
     params: {
@@ -50,7 +51,7 @@ export default async function IssueDetailsPage({ params }: Props) {
             {session && (
                 <div>
                     <div className="flex justify-center flex-col gap-2">
-                        <AssigneeSelect issue={issue}/>
+                        <AssigneeSelect issue={issue} />
                         <EditIssueButton issueId={issue.id} />
                         <DeleteIssueButton issueId={issue.id} />
                     </div>
@@ -58,4 +59,17 @@ export default async function IssueDetailsPage({ params }: Props) {
             )}
         </div>
     );
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+    const issue = await prisma.issue.findUnique({
+        where: {
+            id: parseInt(params.id),
+        },
+    });
+
+    return {
+        title: issue?.title,
+        description: 'Details of Issue ' + issue?.description,
+    };
 }

@@ -4,6 +4,7 @@ import prisma from '@/prisma/client';
 import { Status } from '@prisma/client';
 import Link from 'next/link';
 import IssueStatusFilter from '../_components/IssueStatusFilter';
+import { Metadata } from 'next';
 
 export default async function Issues({
     searchParams,
@@ -40,4 +41,9 @@ export default async function Issues({
             </div>
         </div>
     );
+}
+
+export const metadata: Metadata = {
+    title: 'Issue Tracker - Issue List',
+    description: 'View All Issues in the Project',
 }
